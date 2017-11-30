@@ -3,10 +3,60 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>com.jfield.fansitebot</groupId>
     <artifactId>fansitebot</artifactId>
+    <packaging>jar</packaging>
     <version>1.0.0-SNAPSHOT</version>
+    <name>fansitefeed</name>
+    <url>http://maven.apache.org</url>
 
+    <properties>
+        <maven.compiler>3.7.0</maven.compiler>
+        <discord4j.version>2.9.2</discord4j.version>
+        <sdcf4j.version>v1.0.8</sdcf4j.version>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler}</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository> <!-- This repo fixes issues with transitive dependencies -->
+            <id>jcenter</id>
+            <url>http://jcenter.bintray.com</url>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.github.austinv11</groupId>
+            <artifactId>Discord4J</artifactId>
+            <version>${discord4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.btobastian.sdcf4j</groupId>
+            <artifactId>sdcf4j-core</artifactId>
+            <version>${sdcf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.btobastian.sdcf4j</groupId>
+            <artifactId>sdcf4j-discord4j</artifactId>
+            <version>${sdcf4j.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>
