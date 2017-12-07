@@ -57,6 +57,16 @@
             <artifactId>sdcf4j-discord4j</artifactId>
             <version>${sdcf4j.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.twitter4j</groupId>
+            <artifactId>twitter4j-core</artifactId>
+            <version>[4.0,)</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.json</artifactId>
+            <version>1.1.2</version>
+        </dependency>
     </dependencies>
 
 </project>
