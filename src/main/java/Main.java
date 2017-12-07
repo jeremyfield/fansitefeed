@@ -1,4 +1,5 @@
 import commands.InfoCommands;
+import commands.TwitterCommands;
 import de.btobastian.sdcf4j.CommandExecutor;
 
 public class Main {
@@ -10,7 +11,7 @@ public class Main {
         }
 
         FansiteBot fansiteBot = new FansiteBot(args[0]);
-        CommandExecutor[] commandExecutors = {new InfoCommands()};
+        CommandExecutor[] commandExecutors = {new InfoCommands(), new TwitterCommands()};
 
         fansiteBot.login();
         fansiteBot.registerCommands(commandExecutors);
