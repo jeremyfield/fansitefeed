@@ -40,15 +40,30 @@ public class TwitterCommands implements CommandExecutor{
     }
 
     @Command(aliases = {"!follow", "!add"},
-            privateMessages = false,
-            description = "Adds a fansite to the Twitter Stream.",
-            usage = "!follow <fansite(s)>")
+             privateMessages = false,
+             description = "Adds a fansite to the Twitter Stream.",
+             usage = "!follow <fansite(s)>")
     public String onFollowCommand(IDiscordClient client, IUser user, String[] fansites) {
         if(!hasPermission(client, user)) { return "You do not have permission to execute that command."; }
         try {
             twitter.createUserListMembers(config.getString("listScreenName"), config.getString("listSlug"), fansites);
             return "Added users to the Twitter Stream";
         } catch (TwitterException e) {
+            return "Something went wrong while trying to remove a fansite to the Twitter Stream.";
+        }
+    }
+
+    @Command(aliases = {"!unfollow", "!delete", "!remove"},
+             privateMessages = false,
+             description = "Deletes a fansite from the Twitter Stream.",
+             usage = "!unfollow <fansite(s)>")
+    public String onUnfollowCommand(IDiscordClient client, IUser user, String[] fansites) {
+        if(!hasPermission(client, user)) { return "You do not have permission to execute this command."; }
+        try {
+            twitter.destroyUserListMembers(config.getString("listScreenName"), config.getString("listSlug"), fansites);
+            return "Deleted users from the Twitter Stream.";
+        } catch (TwitterException e) {
+            e.printStackTrace();
             return "Something went wrong while trying to add a fansite to the Twitter Stream.";
         }
     }
