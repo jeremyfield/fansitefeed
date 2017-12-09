@@ -3,15 +3,27 @@ package commands;
 import config.Config;
 import de.btobastian.sdcf4j.Command;
 import de.btobastian.sdcf4j.CommandExecutor;
+import sx.blah.discord.api.IDiscordClient;
+import sx.blah.discord.handle.obj.IRole;
+import sx.blah.discord.handle.obj.IUser;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.UserList;
+import twitter4j.api.ListsResources;
 
 import javax.json.JsonObject;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class TwitterCommands implements CommandExecutor{
 
     JsonObject config;
+    Twitter twitter;
 
     public TwitterCommands() {
         this.config = Config.getConfig("/config.json");
+        this.twitter = TwitterFactory.getSingleton();
     }
 
     @Command(aliases = {"!fansites", "!list", "!accounts"},
@@ -25,5 +37,28 @@ public class TwitterCommands implements CommandExecutor{
         builder.append("The list of fansites can be found here: " + System.lineSeparator());
         builder.append("<https://twitter.com/" + screenName + "/lists/" + slug + "/members>");
         return builder.toString();
+    }
+
+    @Command(aliases = {"!follow", "!add"},
+            privateMessages = false,
+            description = "Adds a fansite to the Twitter Stream.",
+            usage = "!follow <fansite(s)>")
+    public String onFollowCommand(IDiscordClient client, IUser user, String[] fansites) {
+        if(!hasPermission(client, user)) { return "You do not have permission to execute that command."; }
+        try {
+            twitter.createUserListMembers(config.getString("listScreenName"), config.getString("listSlug"), fansites);
+            return "Added users to the Twitter Stream";
+        } catch (TwitterException e) {
+            return "Something went wrong while trying to add a fansite to the Twitter Stream.";
+        }
+    }
+
+    private boolean hasPermission(IDiscordClient client, IUser user) {
+        IRole contributor = client.getRoles()
+                                  .stream()
+                                  .filter(role -> role.getName().equalsIgnoreCase("contributor"))
+                                  .findFirst()
+                                  .get();
+        return user.hasRole(contributor);
     }
 }
